@@ -1,26 +1,99 @@
 # Shared Feature Extraction Layer
+import os.path
+import tensorflow as tf
+import pickle as pkl
+
+from tensorflow import keras
 from keras.utils import plot_model
 from keras.models import Model
-from keras.layers import Input
-from keras.layers import Dense
-from keras.layers.recurrent import LSTM
+from keras.layers import Input,Dense, Flatten, Conv2D, MaxPooling2D
+from keras.losses import sparse_categorical_crossentropy
 from keras.layers.merge import concatenate
-# define input
-visible = Input(shape=(100,1))
-# feature extraction
-extract1 = LSTM(10)(visible)
-# first interpretation model
-interp1 = Dense(10, activation='relu')(extract1)
-# second interpretation model
-interp11 = Dense(10, activation='relu')(extract1)
-interp12 = Dense(20, activation='relu')(interp11)
-interp13 = Dense(10, activation='relu')(interp12)
-# merge interpretation
-merge = concatenate([interp1, interp13])
-# output
-output = Dense(1, activation='sigmoid')(merge)
+
+no_classes = 100
+img_width, img_height, img_num_channels = 32, 32, 3
+loss_function = sparse_categorical_crossentropy
+
+
+if os.path.isfile("dataset.pkl"):
+	model.load("asdasd")
+
+(input_train, target_train), (input_test, target_test) = keras.datasets.cifar100.load_data()
+
+# Determine shape of the data
+input_shape = (img_width, img_height, img_num_channels)
+
+# Parse numbers as floats
+input_train = input_train.astype('float32')
+input_test = input_test.astype('float32')
+
+# Normalize data
+input_train = input_train / 255
+input_test = input_test / 255
+
+
+# input layer
+visible = Input(shape=input_shape)
+# first feature extractor
+conv1 = Conv2D(32, kernel_size=4, activation='relu')(visible)
+pool1 = MaxPooling2D(pool_size=(2, 2))(conv1)
+flat1 = Flatten()(pool1)
+# second feature extractor
+conv2 = Conv2D(256, kernel_size=8, activation='relu')(visible)
+pool2 = MaxPooling2D(pool_size=(2, 2))(conv2)
+flat2 = Flatten()(pool2)
+# merge feature extractors
+merge = concatenate([flat1, flat2])
+# interpretation layer
+hidden1 = Dense(128, activation='relu')(merge)
+# prediction output
+output = Dense(no_classes, activation='softmax')(hidden1)
 model = Model(inputs=visible, outputs=output)
+
 # summarize layers
 print(model.summary())
 # plot graph
 plot_model(model, to_file='shared_feature_extractor.png')
+
+#Adam optimizer
+opt = keras.optimizers.Adam(learning_rate=0.01)
+# Compile the model
+model.compile(loss=loss_function,
+              optimizer=opt,
+              metrics=['accuracy'])
+
+# Fit data to model
+history = model.fit(input_train, target_train,
+            batch_size=64,
+            epochs=1,
+            verbose=1,
+            validation_split=0.2)
+
+
+# Generate generalization metrics
+score = model.evaluate(input_test, target_test, verbose=0)
+print(f'Test loss: {score[0]} / Test accuracy: {score[1]}')
+
+# Visualize history
+# Plot history: Loss
+plt.plot(history.history['val_loss'])
+plt.title('Validation loss history')
+plt.ylabel('Loss value')
+plt.xlabel('No. epoch')
+plt.show()
+
+# Plot history: Accuracy
+plt.plot(history.history['val_accuracy'])
+plt.title('Validation accuracy history')
+plt.ylabel('Accuracy value (%)')
+plt.xlabel('No. epoch')
+plt.show()
+
+model.save("model")
+
+            
+model.evaluate(
+    x=x_test,
+    y=y_test,
+    verbose=1
+)
