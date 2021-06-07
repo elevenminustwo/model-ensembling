@@ -88,11 +88,11 @@ plt.ylabel('Accuracy value (%)')
 plt.xlabel('No. epoch')
 plt.show()
 
-model.save("model")
-
-            
 model.evaluate(
     x=x_test,
     y=y_test,
     verbose=1
 )
+
+model.save("model")
+
