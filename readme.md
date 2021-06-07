@@ -6,4 +6,4 @@
 ![Alt text](ensemble.jpg?raw=true "Ensembling Multiple Models")
 
 ## Combined predictions
-![Alt text](combineprediction.jpeg?raw=true "Combined predictions")
+![Alt text](combinedpredictions.png?raw=true "Combined predictions")
