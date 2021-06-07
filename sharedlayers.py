@@ -1,4 +1,3 @@
-# Shared Feature Extraction Layer
 import os.path
 import tensorflow as tf
 import pickle as pkl
