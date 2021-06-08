@@ -72,7 +72,7 @@ model.compile(loss=loss_function,
 # Fit data to model
 history = model.fit(input_train, target_train,
             batch_size=64,
-            epochs=1,
+            epochs=10,
             verbose=1,
             validation_split=0.2)
 
