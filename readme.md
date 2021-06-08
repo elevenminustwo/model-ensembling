@@ -13,9 +13,9 @@ Imprecise probability calculation
 - [ ] https://www.researchgate.net/publication/272854678_Calculation_of_Failure_Probability_of_Series_and_Parallel_Systems_for_Imprecise_Probability
 
 ## Average Probability Ensemble
-![Alt text](averageprobabilityensemble.png?raw=true "Average Probability Ensemble")
+![Alt text](img/averageprobabilityensemble.png?raw=true "Average Probability Ensemble")
 
 ## Ensembling Multiple Models
-![Alt text](ensemble.jpg?raw=true "Ensembling Multiple Models")
+![Alt text](img/ensemble.jpg?raw=true "Ensembling Multiple Models")
 
 

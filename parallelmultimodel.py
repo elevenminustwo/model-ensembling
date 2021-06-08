@@ -52,7 +52,7 @@ model = Model(inputs=visible, outputs=output)
 # summarize layers
 print(model.summary())
 # plot graph
-plot_model(model, to_file='shared_feature_extractor.png')
+plot_model(model, to_file='img/shared_feature_extractor.png')
 
 #Adam optimizer
 opt = keras.optimizers.Adam(learning_rate=0.01)
