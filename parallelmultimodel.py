@@ -8,6 +8,7 @@ from keras.models import Model
 from keras.layers import Input,Dense, Flatten, Conv2D, MaxPooling2D
 from keras.losses import sparse_categorical_crossentropy
 from keras.layers.merge import concatenate
+from matplotlib import pyplot as plt
 
 no_classes = 100
 img_width, img_height, img_num_channels = 32, 32, 3
@@ -15,9 +16,9 @@ loss_function = sparse_categorical_crossentropy
 
 
 if os.path.isfile("dataset.pkl"):
-	model.load("asdasd")
+	model.load("model.h5")
 
-(input_train, target_train), (input_test, target_test) = keras.datasets.cifar100.load_data()
+(input_train, target_train), (input_test, target_test) = keras.datasets.cifar10.load_data()
 
 # Determine shape of the data
 input_shape = (img_width, img_height, img_num_channels)
@@ -41,8 +42,15 @@ flat1 = Flatten()(pool1)
 conv2 = Conv2D(256, kernel_size=8, activation='relu')(visible)
 pool2 = MaxPooling2D(pool_size=(2, 2))(conv2)
 flat2 = Flatten()(pool2)
+
+# third feature extractors 
+conv3 = Conv2D(256, kernel_size=8, activation='relu')(visible)
+pool3 = MaxPooling2D(pool_size=(2, 2))(conv3)
+flat3 = Flatten()(pool3)
+
+
 # merge feature extractors
-merge = concatenate([flat1, flat2])
+merge = concatenate([flat1, flat2, flat3])
 # interpretation layer
 hidden1 = Dense(128, activation='relu')(merge)
 # prediction output
@@ -55,7 +63,7 @@ print(model.summary())
 plot_model(model, to_file='img/shared_feature_extractor.png')
 
 #Adam optimizer
-opt = keras.optimizers.Adam(learning_rate=0.01)
+opt = keras.optimizers.Adam(lr=0.01)
 # Compile the model
 model.compile(loss=loss_function,
               optimizer=opt,
@@ -79,20 +87,20 @@ plt.plot(history.history['val_loss'])
 plt.title('Validation loss history')
 plt.ylabel('Loss value')
 plt.xlabel('No. epoch')
-plt.show()
+plt.savefig("img/loss.png")
 
 # Plot history: Accuracy
 plt.plot(history.history['val_accuracy'])
 plt.title('Validation accuracy history')
 plt.ylabel('Accuracy value (%)')
 plt.xlabel('No. epoch')
-plt.show()
+plt.savefig("img/accuracy.png")
 
 model.evaluate(
-    x=x_test,
-    y=y_test,
+    x=input_test,
+    y=target_test,
     verbose=1
 )
 
-model.save("model")
+model.save("model.h5")
 

@@ -1,4 +1,4 @@
-# Image classification on CIFAR100 with multiple trained models and ensemble
+# Image classification on CIFAR10 with multiple trained models and ensemble
 Make sure you installed graphviz on the os. Otherwise pydot cant call it in virtualenv. 
 `sudo apt-get install graphviz`
 
