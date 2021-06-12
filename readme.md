@@ -5,7 +5,7 @@ Make sure you installed graphviz on the os. Otherwise pydot cant call it in virt
 ### Literature
 
 Ensemble methods and applications PP. 15-18
-- [ ] 
+- [X] 
 [Zhi-Hua, Z. (2012). Ensemble Algorithm: Foundations and Algorithm](https://books.google.com.tr/books?hl=tr&lr=&id=BDB50Ev2ur4C&oi=fnd&pg=PP1&dq=Zhi-Hua,+Z.+(2012).+Ensemble+Algorithm:+Foundations+and+Algorithm.&ots=OyDDCkiVML&sig=OH7pYuRTZH07z6ghMDGE8ajIXRc&redir_esc=y#v=onepage&q=Zhi-Hua%2C%20Z.%20(2012).%20Ensemble%20Algorithm%3A%20Foundations%20and%20Algorithm.&f=false)
 
 
