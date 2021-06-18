@@ -22,6 +22,7 @@ from keras.losses import sparse_categorical_crossentropy
 from keras.layers.merge import concatenate
 from keras.optimizers import SGD
 from matplotlib import pyplot as plt
+from sklearn.ensemble import VotingClassifier
 
 device_name = tf.test.gpu_device_name()
 if device_name != '/device:GPU:0':
@@ -144,8 +145,7 @@ print(model4.summary())
 #plot_model(model3, to_file='model3.png')
 #plot_model(model4, to_file='model4.png')
 
-# Fit data to model
-history = modelseq.fit(input_train, target_train,
+"""history = modelseq.fit(input_train, target_train,
             batch_size=64,
             epochs=25,
             verbose=1,
@@ -198,18 +198,52 @@ prediction1 = modelseq.predict(input_test)
 prediction2 = model2.predict(input_test)
 prediction3 = model3.predict(input_test)
 prediction4 = model4.predict(input_test)
+"""
 
-#sum
-predictsum = prediction3+prediction4
-#multiply with square of accuracy 
-predictsum2 = score3[1]**2*prediction3+score4[1]**2*prediction4
+scores = list()
+scores.append(0.7398999929428101)
+scores.append(0.794700026512146)
+scores.append(0.6926000118255615)
+scores.append(0.6664000153541565)
 
-predictsum3 = prediction1+prediction2+prediction3+prediction4
-predictsum4 = score[1]**2*prediction1+score2[1]**2*prediction2+score3[1]**2*prediction3+score4[1]**2*prediction4
 
-print(predictsum[2].sum())
-print(target_test.shape)
-print(np.mean(np.argmax(predictsum,axis=1)==np.squeeze(target_test)))
-print(np.mean(np.argmax(predictsum2,axis=1)==np.squeeze(target_test)))
-print(np.mean(np.argmax(predictsum3,axis=1)==np.squeeze(target_test)))
-print(np.mean(np.argmax(predictsum4,axis=1)==np.squeeze(target_test)))
+keras_clf = tf.keras.wrappers.scikit_learn.KerasClassifier(build_fn = lambda:
+                            modelseq,
+                            epochs=25,
+                            verbose=False)
+
+keras_clf2 = tf.keras.wrappers.scikit_learn.KerasClassifier(build_fn = lambda:
+                            model2,
+                            epochs=10,
+                            verbose=False)
+keras_clf3 = tf.keras.wrappers.scikit_learn.KerasClassifier(build_fn = lambda:
+                            model3,
+                            epochs=10,
+                            verbose=False)
+keras_clf4 = tf.keras.wrappers.scikit_learn.KerasClassifier(build_fn = lambda:
+                            model4,
+                            epochs=10,
+                            verbose=False)
+
+keras_clf._estimator_type = "classifier"
+keras_clf2._estimator_type = "classifier"
+keras_clf3._estimator_type = "classifier"
+keras_clf4._estimator_type = "classifier"
+
+models = list()	
+models.append(('m1', keras_clf))
+models.append(('m2', keras_clf2))
+models.append(('m3', keras_clf3))
+models.append(('m4', keras_clf4))
+
+# create the ensemble
+ensemble = VotingClassifier(estimators=models, voting='soft', weights=scores)
+# fit the ensemble on the training dataset
+ensemble.fit(input_train,target_train.ravel())
+# make predictions on test set
+yhat = ensemble.predict(input_test)
+
+# evaluate predictions
+score = np.mean(yhat==np.squeeze(target_test))
+print(scores)
+print('Weighted Avg Accuracy: %.3f' % (score*100))
