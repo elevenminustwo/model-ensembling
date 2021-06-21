@@ -10,7 +10,7 @@ Ensemble methods and applications PP. 15-18
 
 
 Learning with ensembles
-- [ ]
+- [X]
 [Learning with ensembles](https://proceedings.neurips.cc/paper/1995/file/1019c8091693ef5c5f55970346633f92-Paper.pdf)
 
 Neural Network Ensembles, Cross validation and Active Learning
