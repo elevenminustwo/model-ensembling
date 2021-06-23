@@ -29,8 +29,9 @@ seed_value = 1234
 os.environ['PYTHONHASHSEED']=str(seed_value)
 np.random.seed(seed_value)
 tf.random.set_seed(seed_value)
+os.environ['TF_DETERMINISTIC_OPS'] = '1'
 
-#maybe tensorflow and tf differs
+#tf deterministic ops just in case
 
 device_name = tf.test.gpu_device_name()
 if device_name != '/device:GPU:0':
@@ -230,13 +231,13 @@ history_inc = modified_inc.fit(input_train, target_train,
 """
 
 scores = list()
-scores.append(0.8102)
-scores.append(0.8131)
-scores.append(0.6504)
-scores.append(0.6123)
+scores.append(0.8094)
+scores.append(0.8209)
+scores.append(0.7386)
+scores.append(0.6340)
 
 
-callback = tf.keras.callbacks.EarlyStopping(monitor='val_loss',verbose=1, patience=5,restore_best_weights=True)
+callback = tf.keras.callbacks.EarlyStopping(monitor='val_loss',verbose=1, patience=10,restore_best_weights=True)
 
 keras_clf = tf.keras.wrappers.scikit_learn.KerasClassifier(build_fn = lambda:
                             modelseq,
