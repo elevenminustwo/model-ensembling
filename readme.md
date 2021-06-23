@@ -14,7 +14,7 @@ Learning with ensembles
 [Learning with ensembles](https://proceedings.neurips.cc/paper/1995/file/1019c8091693ef5c5f55970346633f92-Paper.pdf)
 
 Neural Network Ensembles, Cross validation and Active Learning
-- [ ] 
+- [X] 
 [Neural Network Ensembles, Cross validation and Active Learning](https://papers.nips.cc/paper/1994/file/b8c37e33defde51cf91e1e03e51657da-Paper.pdf)
 
 
